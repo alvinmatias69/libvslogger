@@ -1,0 +1,49 @@
+# libvslogger
+
+A very simple leveled logger for C.
+
+## Installation
+
+Download the latest package from the release page:
+- https://github.com/alvinmatias69/libvslogger/releases
+
+Extract and compile libvslogger
+
+``` sh
+$ tar -xf libvslogger-x.x.x.tar.gz
+$ cd libvslogger-x.x.x
+$ ./configure
+$ make
+$ make install # might require superuser role
+```
+
+## Usage Example
+
+```c
+#include <libvslogger.h>
+
+int main(void) {
+    // prepare logger configuration
+    struct vslogger_config config = {
+        .level = VSLOGGER_INFO,
+        .destination = stdout,
+        .enable_date = true,
+        .enable_prefix = true,
+    };
+
+    // init the logger with given config
+    vslogger_init(&config);
+
+    vslogger_info("hello info");
+
+    // higher level log from the config won't be printed
+    vslogger_debug("hello debug");
+    
+    // subsequent init will update the configuration
+    config.level = VSLOGGER_DEBUG;
+    vslogger_init(&config);
+    
+    // remember to clear the configuration on finish
+    vslogger_clear();
+}
+```
